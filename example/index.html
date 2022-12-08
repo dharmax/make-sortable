@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example</title>
+</head>
+<body>
+<div class="demo">
+    <table>
+        <thead>
+        <tr>
+            <td class="sortable">name</td>
+            <td class="sortable">price</td>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+</body>
+<style>
+
+    thead {
+        font-weight: bold
+    }
+    thead td {
+        width: 10em;
+        padding-right: 2em;
+    }
+    body {
+        --sort-ascending-icon: url("../icons/sortASC.svg");
+        --sort-descending-icon: url("../icons/sortDESC.svg");
+    }
+
+    .sortable {
+        background-origin: content-box !important;
+    }
+
+    .sortable.ascending {
+        background: right no-repeat var(--sort-ascending-icon);
+    }
+
+    .sortable.descending {
+        background: right no-repeat var(--sort-descending-icon);
+    }
+
+
+</style>
+<script type="module">
+
+    import {makeSortable} from "../lib/make-sortable.js";
+
+    const tableNode = document.body.querySelector('table')
+    const tableBody = tableNode.querySelector('tbody')
+
+    const data = [{name: 'TV', price: 3050},
+        {name: 'Radio', price: 50},
+        {name: 'Car', price: 50000},
+        {name: 'Oven', price: 350},
+        {name: 'Dog', price: 550},
+        {name: 'Cat', price: 450}
+    ]
+
+    renderTable()
+
+    makeSortable(tableNode, (fieldName, state) => {
+        data.sort((r1, r2) => {
+            const [i1, i2] = [r1[fieldName], r2[fieldName]]
+            if (fieldName === 'price')
+                return Math.sign(state === 'ascending' ? i2 - i1 : i1 - i2)
+            else if (fieldName === 'name') {
+                return state === 'ascending' ? i2.localeCompare(i1) : i1.localeCompare(i2)
+            }
+        })
+        renderTable()
+    })
+
+    function renderTable() {
+        let s = ''
+        data.forEach(record => {
+            s += `<tr><td>${record.name}</td><td>${record.price}</td></tr>`
+        })
+        tableBody.innerHTML = s
+    }
+</script>
+
+
+</html>
