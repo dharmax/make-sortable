@@ -53,18 +53,21 @@
     const tableNode = document.body.querySelector('table')
     const tableBody = tableNode.querySelector('tbody')
 
-    const data = [{name: 'TV', price: 3050},
+    const dataOriginal = [{name: 'TV', price: 3050},
         {name: 'Radio', price: 50},
         {name: 'Car', price: 50000},
         {name: 'Oven', price: 350},
         {name: 'Dog', price: 550},
         {name: 'Cat', price: 450}
     ]
+    let data = [...dataOriginal]
 
     renderTable()
 
     makeSortable(tableNode, (fieldName, state) => {
-        data.sort((r1, r2) => {
+        if ( state ==='unsorted')
+            data = [...dataOriginal]
+        else data.sort((r1, r2) => {
             const [i1, i2] = [r1[fieldName], r2[fieldName]]
             if (fieldName === 'price')
                 return Math.sign(state === 'ascending' ? i2 - i1 : i1 - i2)
