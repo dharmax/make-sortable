@@ -16,7 +16,7 @@ export function makeSortable(node: HTMLElement, callback: (fieldName: string, st
     if (node.sorterContext)
         return
     // @ts-ignore
-    node.sorterContext = new SorterContext(node, callback)
+    return node.sorterContext = new SorterContext(node, callback)
 }
 
 const modeClasses = ['ascending', 'descending', 'unsorted'] as const
