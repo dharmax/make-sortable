@@ -25,7 +25,7 @@ export type SortMode = typeof modeClasses[number]
 class SorterContext {
 
     constructor(private node: HTMLElement, callback: (fieldName: string, mode: SortMode) => SorterContext) {
-        node.addEventListener('click', (event: Event) => {
+        node.addEventListener('mouseup', (event: Event) => {
             const columnHeader = event.target as HTMLElement
             if (!columnHeader.classList.contains('sortable'))
                 return
