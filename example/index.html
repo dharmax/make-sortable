@@ -16,6 +16,7 @@
         <tbody>
         </tbody>
     </table>
+    <button id="contextTest">Test Save and Restore</button>
 </div>
 </body>
 <style>
@@ -64,7 +65,9 @@
 
     renderTable()
 
-    makeSortable(tableNode, (fieldName, state) => {
+    document.getElementById('contextTest').addEventListener('click', contextTest)
+
+    const sortContext = makeSortable(tableNode, (fieldName, state) => {
         if ( state ==='unsorted')
             data = [...dataOriginal]
         else data.sort((r1, r2) => {
@@ -77,6 +80,13 @@
         })
         renderTable()
     })
+
+    function contextTest() {
+        const context = sortContext.context;
+        console.log( context)
+        sortContext.context = context
+        console.log( context)
+    }
 
     function renderTable() {
         let s = ''
