@@ -1,6 +1,6 @@
 {
   "name": "@dharmax/make-sortable",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Making reading/populating input fields easy and  fun",
   "main": "lib/make-sortable.js",
   "types": "lib/make-sortable.d.ts",

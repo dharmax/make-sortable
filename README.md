@@ -34,13 +34,16 @@ also see the runnable example in the example folder
  //  myTableElement is the DOM element with your table.
  // Just add the 'sortable' class to the column heads you want to be sortable.
  // Note that you can add fieldname attribute to give a logical name to the column instead of the text in the TD
- makeSortable(myTableElement, sortBy)
+const sortContext makeSortable(myTableElement, sortBy)
  
  // direction is SortMode ('ascending', 'descending', 'unsorted')
 function sortBy(column, direction) {
 // sorts the data 
 }
 
+// using sortContext you can save the sort state, restore it or set default sort 
+// for example:
+sortContext.defaultSort = {name:'ascending')
 
 ```
 

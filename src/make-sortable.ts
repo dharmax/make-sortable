@@ -12,7 +12,7 @@
  * @param node - the node of the table header (the container of the column headers)
  * @param callback - the callback where the actual sorting should be performed
  */
-export function makeSortable(node: HTMLElement, callback: (fieldName: string, state: SortMode) => SorterContext):SorterContext {
+export function makeSortable(node: HTMLElement, callback: (fieldName: string, state: SortMode) => SorterContext): SorterContext {
 
     // @ts-ignore
     return node.sorterContext = node.sorterContext || new SorterContext(node, callback)
@@ -22,6 +22,8 @@ const modeClasses = ['ascending', 'descending', 'unsorted'] as const
 export type SortMode = typeof modeClasses[number]
 
 class SorterContext {
+
+    private _defaultSort:{[field:string]:SortMode} | null = null
 
     constructor(private node: HTMLElement, private callback: (fieldName: string, mode: SortMode) => SorterContext) {
         node.addEventListener('mouseup', (event: Event) => {
@@ -45,6 +47,10 @@ class SorterContext {
 
             // change the sort state class to the new one
             columnHeader.classList.add(newState)
+
+            if (this.defaultSort && newState == "unsorted")
+                this.context = this.defaultSort
+
 
             // execute callback
             // @ts-ignore
@@ -74,7 +80,7 @@ class SorterContext {
     get context() {
         const headers = this.node.getElementsByClassName('sortable')
         // @ts-ignore
-        return Array.from(headers).reduce( (a,c) => {
+        return Array.from(headers).reduce((a, c) => {
             const sortState = this.getSortState(c)
             // @ts-ignore
             sortState && sortState != 'unsorted' && (a[this.getFieldName(c)] = sortState)
@@ -82,18 +88,27 @@ class SorterContext {
         }, {})
     }
 
+    set defaultSort(sort: { [fieldName: string]: SortMode }) {
+        this._defaultSort = sort
+        this.context = sort
+    }
+
+    get defaultSort():any {
+        return this._defaultSort
+    }
+
     /**
      * Restores a sort state
      * @param context the sort state to be restored
      */
-    set context( context:{[field:string]:SortMode} ) {
+    set context(context: { [field: string]: SortMode }) {
         const entries = Object.entries(context)
         if (!entries.length)
             return
-        const [fieldName,mode] = entries[0]
+        const [fieldName, mode] = entries[0]
         const columnHeader = Array.from(this.node.getElementsByClassName('sortable'))
             // @ts-ignore
-            .find( header => fieldName === this.getFieldName(header)) as HTMLElement
+            .find(header => fieldName === this.getFieldName(header)) as HTMLElement
         columnHeader.classList.add(mode)
         this.callback(fieldName, mode)
     }
