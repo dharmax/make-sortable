@@ -48,13 +48,14 @@ class SorterContext {
             // change the sort state class to the new one
             columnHeader.classList.add(newState)
 
-            if (this.defaultSort && newState == "unsorted")
+            const fieldName = this.getFieldName(columnHeader);
+
+            if (this.defaultSort && newState == "unsorted" && fieldName !=Object.keys(this.defaultSort)[0])
                 this.context = this.defaultSort
 
 
             // execute callback
-            // @ts-ignore
-            callback(this.getFieldName(columnHeader), newState)
+            fieldName && callback(fieldName, newState)
 
         })
 
