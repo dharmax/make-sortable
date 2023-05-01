@@ -23,7 +23,7 @@ export type SortMode = typeof modeClasses[number]
 
 class SorterContext {
 
-    private _defaultSort:{[field:string]:SortMode} | null = null
+    private _defaultSort: { [field: string]: SortMode } | null = null
 
     constructor(private node: HTMLElement, private callback: (fieldName: string, mode: SortMode) => SorterContext) {
         node.addEventListener('mouseup', (event: Event) => {
@@ -50,12 +50,11 @@ class SorterContext {
 
             const fieldName = this.getFieldName(columnHeader);
 
-            if (this.defaultSort && newState == "unsorted" && fieldName !=Object.keys(this.defaultSort)[0])
+            if (this.defaultSort && newState == "unsorted" && fieldName != Object.keys(this.defaultSort)[0])
                 this.context = this.defaultSort
-
-
-            // execute callback
-            fieldName && callback(fieldName, newState)
+            else
+                // execute callback
+                fieldName && callback(fieldName, newState)
 
         })
 
@@ -94,7 +93,7 @@ class SorterContext {
         this.context = sort
     }
 
-    get defaultSort():any {
+    get defaultSort(): any {
         return this._defaultSort
     }
 
